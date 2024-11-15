@@ -1,4 +1,4 @@
-// src/adapters/output/MongoTicketRepository.ts
+// src/infrastructure/output/MongoTicketRepository.ts
 import { ITicketRepository } from '../../core/ports/ITicketRepository';
 import { Ticket } from '../../core/domain/Ticket';
 import { MongoClient } from 'mongodb';

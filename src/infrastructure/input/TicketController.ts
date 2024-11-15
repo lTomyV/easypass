@@ -1,12 +1,12 @@
-// src/adapters/input/TicketController.ts
+// src/infrastructure/input/TicketController.ts
 import express from 'express';
-import { MongoClient } from 'mongodb';  // Importa MongoClient desde 'mongodb'
 import { BuyTicket } from '../../core/app/BuyTicket';
-import { MongoTicketRepository } from '../output/MongoTicketRepository';
+import { InMemoryTicketRepository } from '../output/InMemoryTicketRepository';
 
 const app = express();
-const client = new MongoClient('mongodb://localhost:27017');
-const ticketRepo = new MongoTicketRepository(client);
+app.use(express.json());
+
+const ticketRepo = new InMemoryTicketRepository();
 const buyTicket = new BuyTicket(ticketRepo);
 
 app.post('/buy-ticket', async (req, res) => {
@@ -16,11 +16,11 @@ app.post('/buy-ticket', async (req, res) => {
     res.status(200).json({ success: true, ticketId });
   } catch (error) {
     if (error instanceof Error) {
-        res.status(400).json({ success: false, message: error.message });
-      } else {
-        res.status(400).json({ success: false, message: 'Unknown error occurred' });
-      }
+      res.status(400).json({ success: false, message: error.message });
+    } else {
+      res.status(400).json({ success: false, message: 'Unknown error occurred' });
     }
+  }
 });
 
 app.listen(3000, () => console.log('Server running on http://localhost:3000'));
