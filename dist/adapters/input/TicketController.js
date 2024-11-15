@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // src/adapters/input/TicketController.ts
 const express_1 = __importDefault(require("express"));
-const BuyTicket_1 = require("../../core/usecases/BuyTicket");
+const BuyTicket_1 = require("../../core/app/BuyTicket");
 const MongoTicketRepository_1 = require("../output/MongoTicketRepository");
 const app = (0, express_1.default)();
 const client = new MongoClient('mongodb://localhost:27017');

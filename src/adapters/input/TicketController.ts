@@ -1,7 +1,7 @@
 // src/adapters/input/TicketController.ts
 import express from 'express';
 import { MongoClient } from 'mongodb';  // Importa MongoClient desde 'mongodb'
-import { BuyTicket } from '../../core/usecases/BuyTicket';
+import { BuyTicket } from '../../core/app/BuyTicket';
 import { MongoTicketRepository } from '../output/MongoTicketRepository';
 
 const app = express();

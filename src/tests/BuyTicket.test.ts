@@ -1,5 +1,5 @@
 // src/tests/BuyTicket.test.ts
-import { BuyTicket } from '../core/usecases/BuyTicket';
+import { BuyTicket } from '../core/app/BuyTicket';
 import { Ticket } from '../core/domain/Ticket';
 
 test('Should buy a ticket when available', async () => {

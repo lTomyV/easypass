@@ -1,4 +1,4 @@
-// src/core/usecases/BuyTicket.ts
+// src/core/app/BuyTicket.ts
 import { ITicketRepository } from '../ports/ITicketRepository';
 
 export class BuyTicket {
