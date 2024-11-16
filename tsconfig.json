@@ -3,7 +3,7 @@
     "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
-    "types": ["node", "express"],
+    "types": ["node", "express", "jest"],
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": true,

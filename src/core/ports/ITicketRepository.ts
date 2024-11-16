@@ -3,5 +3,6 @@ import { Ticket } from '../domain/Ticket';
 
 export interface ITicketRepository {
   getAvailableTickets(eventId: string): Promise<Ticket[]>;
-  updateTicket(ticket: Ticket): Promise<void>;
+  getTicketsByEventId(eventId: string): Promise<Ticket[]>;
+  addTicket(ticket: Ticket): Promise<void>;
 }
