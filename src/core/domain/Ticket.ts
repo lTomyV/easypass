@@ -3,6 +3,6 @@ export class Ticket {
   constructor(
     public id: string,
     public eventId: string,
-    public status: 'AVAILABLE' = 'AVAILABLE'
+    public status: 'AVAILABLE' | 'RESERVED' | 'SOLD' | 'USED'
   ) {}
 }

@@ -30,7 +30,11 @@ class InMemoryEventRepository {
     }
     getEventById(eventId) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.events.find(event => event.id === eventId);
+            const event = this.events.find(event => event.id === eventId);
+            if (!event) {
+                throw new Error(`Event with id ${eventId} not found`);
+            }
+            return event;
         });
     }
 }

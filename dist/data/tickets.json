@@ -1,47 +1,32 @@
 [
   {
-    "id": "4e5e6b30-771b-41aa-8f3c-1e075fa34c32",
+    "id": "80267137-d6de-4de1-bb0e-5ec168e8dd02",
     "eventId": "1",
-    "status": "AVAILABLE"
+    "status": "SOLD"
   },
   {
-    "id": "5a6b7c80-882c-41bb-9f4d-2f085fb45d43",
-    "eventId": "1",
-    "status": "AVAILABLE"
+    "id": "b383ab39-c457-4f53-bf82-b099fd0ee68b",
+    "eventId": "2",
+    "status": "SOLD"
   },
   {
-    "id": "6b7c8d90-993d-42cc-af5e-3f196fc56e54",
-    "eventId": "1",
-    "status": "AVAILABLE"
+    "id": "bb105bb7-da47-4cbc-98c9-0e6ec435e622",
+    "eventId": "2",
+    "status": "SOLD"
   },
   {
-    "id": "7c8d9ea0-aa4d-43dd-bf6f-4f2a70d67f65",
+    "id": "b49caa88-ac48-459d-9c38-05f5523d1ab7",
     "eventId": "1",
-    "status": "AVAILABLE"
+    "status": "SOLD"
   },
   {
-    "id": "8d9eafb0-bb5e-44ee-cf7f-5f3b81e78f76",
+    "id": "383f7eb0-fb00-44a6-b726-cc350a14380e",
     "eventId": "1",
-    "status": "AVAILABLE"
+    "status": "SOLD"
   },
   {
-    "id": "9eafb0c0-cc6f-45ff-df8f-6f4c92f89f87",
+    "id": "24808ff5-d5f6-4571-91c2-d8e1d7b42478",
     "eventId": "1",
-    "status": "AVAILABLE"
-  },
-  {
-    "id": "afb0c1d0-dd70-4600-ef90-7f5da3fa90a8",
-    "eventId": "1",
-    "status": "AVAILABLE"
-  },
-  {
-    "id": "b0c1d2e0-ee81-4711-f0a1-8f6eb4fb01b9",
-    "eventId": "1",
-    "status": "AVAILABLE"
-  },
-  {
-    "id": "c1d2e3f0-ff92-4822-g1b2-9f7fc5fc12ca",
-    "eventId": "1",
-    "status": "AVAILABLE"
+    "status": "SOLD"
   }
 ]

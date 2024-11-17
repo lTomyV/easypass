@@ -21,7 +21,7 @@ export class BuyTicket {
       throw new Error('No tickets available for this event');
     }
 
-    const ticket = new Ticket(uuidv4(), eventId);
+    const ticket = new Ticket(uuidv4(), eventId, 'SOLD');
     await this.ticketRepository.addTicket(ticket);
 
     return ticket.id;

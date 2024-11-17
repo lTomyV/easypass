@@ -27,7 +27,7 @@ class BuyTicket {
             if (tickets.length >= event.quota) {
                 throw new Error('No tickets available for this event');
             }
-            const ticket = new Ticket_1.Ticket((0, uuid_1.v4)(), eventId);
+            const ticket = new Ticket_1.Ticket((0, uuid_1.v4)(), eventId, 'SOLD');
             yield this.ticketRepository.addTicket(ticket);
             return ticket.id;
         });
