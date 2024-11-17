@@ -29,5 +29,16 @@ const eventRepo = new InMemoryEventRepository(path.resolve(__dirname, '../../dat
     }
   });
 
+  app.get('/api/events', async (req, res) => {
+    try {
+      const events = await eventRepo.getEvents();
+      res.status(200).json(events);
+    } catch (error) {
+      res.status(500).json({ success: false, message: 'Failed to fetch events' });
+    }
+  });
+
+  app.use(express.static(path.join(__dirname, '../../frontend/build')));
+
   app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 })();
