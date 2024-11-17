@@ -38,7 +38,13 @@ const eventRepo = new InMemoryEventRepository(path.resolve(__dirname, '../../dat
     }
   });
 
-  app.use(express.static(path.join(__dirname, '../../frontend/build')));
+  // Servir archivos estáticos del frontend
+  app.use(express.static(path.join(__dirname, '../../../frontend/build')));
+
+  // Manejar todas las demás rutas con el archivo index.html del frontend
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../../frontend/build', 'index.html'));
+  });
 
   app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 })();

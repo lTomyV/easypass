@@ -49,6 +49,11 @@ const eventRepo = new InMemoryEventRepository_1.InMemoryEventRepository(path_1.d
             res.status(500).json({ success: false, message: 'Failed to fetch events' });
         }
     }));
-    app.use(express_1.default.static(path_1.default.join(__dirname, '../../frontend/build')));
+    // Servir archivos estáticos del frontend
+    app.use(express_1.default.static(path_1.default.join(__dirname, '../../../frontend/build')));
+    // Manejar todas las demás rutas con el archivo index.html del frontend
+    app.get('*', (req, res) => {
+        res.sendFile(path_1.default.join(__dirname, '../../../frontend/build', 'index.html'));
+    });
     app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 }))();
