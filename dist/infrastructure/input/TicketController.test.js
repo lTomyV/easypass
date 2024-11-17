@@ -108,10 +108,10 @@ const reservationTimers = {};
             }
             const soldTickets = tickets.filter(ticket => ticket.status === 'SOLD').length;
             const reservedCount = reservedTickets[eventId] || 0;
-            const availableTickets = event.quota - soldTickets - reservedCount;
-            if (availableTickets <= 0) {
-                return res.status(400).json({ success: false, message: 'No tickets available' });
-            }
+            //const availableTickets = event.quota - soldTickets - reservedCount;
+            //if (availableTickets <= 0) {
+            //    return res.status(400).json({ success: false, message: 'No tickets available' });
+            //}
             const ticket = new Ticket_1.Ticket((0, uuid_1.v4)(), eventId, 'SOLD');
             yield ticketRepo.addTicket(ticket);
             reservedTickets[eventId] = reservedCount > 0 ? reservedCount - 1 : 0;

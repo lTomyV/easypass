@@ -98,10 +98,10 @@ const reservationTimers: { [ticketId: string]: NodeJS.Timeout } = {};
       }
       const soldTickets = tickets.filter(ticket => ticket.status === 'SOLD').length;
       const reservedCount = reservedTickets[eventId] || 0;
-      const availableTickets = event.quota - soldTickets - reservedCount;
-      if (availableTickets <= 0) {
-        return res.status(400).json({ success: false, message: 'No tickets available' });
-      }
+      //const availableTickets = event.quota - soldTickets - reservedCount;
+      //if (availableTickets <= 0) {
+      //  return res.status(400).json({ success: false, message: 'No tickets available' });
+      //}
       const ticket = new Ticket(uuidv4(), eventId, 'SOLD');
       await ticketRepo.addTicket(ticket);
       reservedTickets[eventId] = reservedCount > 0 ? reservedCount - 1 : 0;
