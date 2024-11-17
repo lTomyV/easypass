@@ -10,19 +10,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BuyTicket = void 0;
+const Ticket_1 = require("../domain/Ticket");
+const uuid_1 = require("uuid");
 class BuyTicket {
-    constructor(ticketRepository) {
+    constructor(ticketRepository, eventRepository) {
         this.ticketRepository = ticketRepository;
+        this.eventRepository = eventRepository;
     }
-    execute(userId, eventId) {
+    execute(eventId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const tickets = yield this.ticketRepository.getAvailableTickets(eventId);
-            if (tickets.length === 0)
-                throw new Error('No tickets available');
-            const ticket = tickets[0];
-            ticket.status = 'SOLD';
-            ticket.userId = userId;
-            yield this.ticketRepository.updateTicket(ticket);
+            const event = yield this.eventRepository.getEventById(eventId);
+            if (!event) {
+                throw new Error('Event not found');
+            }
+            const tickets = yield this.ticketRepository.getTicketsByEventId(eventId);
+            if (tickets.length >= event.quota) {
+                throw new Error('No tickets available for this event');
+            }
+            const ticket = new Ticket_1.Ticket((0, uuid_1.v4)(), eventId);
+            yield this.ticketRepository.addTicket(ticket);
             return ticket.id;
         });
     }

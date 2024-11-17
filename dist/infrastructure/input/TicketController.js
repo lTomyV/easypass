@@ -15,26 +15,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // src/infrastructure/input/TicketController.ts
 const express_1 = __importDefault(require("express"));
 const BuyTicket_1 = require("../../core/app/BuyTicket");
-const MongoTicketRepository_1 = require("../output/MongoTicketRepository");
+const InMemoryTicketRepository_1 = require("../output/InMemoryTicketRepository");
+const InMemoryEventRepository_1 = require("../output/InMemoryEventRepository");
+const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
-const client = new MongoClient('mongodb://localhost:27017');
-const ticketRepo = new MongoTicketRepository_1.MongoTicketRepository(client);
-const buyTicket = new BuyTicket_1.BuyTicket(ticketRepo);
-app.post('/buy-ticket', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { userId, eventId } = req.body;
-        const ticketId = yield buyTicket.execute(userId, eventId);
-        res.status(200).json({ success: true, ticketId });
-    }
-    catch (error) {
-        if (error instanceof Error) {
-            // ahora TypeScript sabe que 'error' es de tipo 'Error' y tiene la propiedad 'message'
-            res.status(400).json({ success: false, message: error.message });
+app.use(express_1.default.json());
+const ticketRepo = new InMemoryTicketRepository_1.InMemoryTicketRepository(path_1.default.resolve(__dirname, '../../data/tickets.json'));
+const eventRepo = new InMemoryEventRepository_1.InMemoryEventRepository(path_1.default.resolve(__dirname, '../../data/events.json'));
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield eventRepo.loadEvents(); // Cargar eventos desde el archivo JSON
+    const buyTicket = new BuyTicket_1.BuyTicket(ticketRepo, eventRepo);
+    app.post('/buy-ticket', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { eventId } = req.body;
+            const ticketId = yield buyTicket.execute(eventId);
+            res.status(200).json({ success: true, ticketId });
         }
-        else {
-            // Si el error no es de tipo 'Error', maneja el caso aquí
-            res.status(400).json({ success: false, message: 'Unknown error occurred' });
+        catch (error) {
+            if (error instanceof Error) {
+                res.status(400).json({ success: false, message: error.message });
+            }
+            else {
+                res.status(400).json({ success: false, message: 'Unknown error occurred' });
+            }
         }
-    }
-}));
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+    }));
+    app.get('/api/events', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const events = yield eventRepo.getEvents();
+            res.status(200).json(events);
+        }
+        catch (error) {
+            res.status(500).json({ success: false, message: 'Failed to fetch events' });
+        }
+    }));
+    app.use(express_1.default.static(path_1.default.join(__dirname, '../../frontend/build')));
+    app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+}))();
