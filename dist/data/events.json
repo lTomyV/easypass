@@ -1,16 +1,18 @@
 [
   {
     "id": "1",
-    "title": "Event 1",
-    "date": "2021-01-01",
-    "description": "Description 1",
-    "quota": 3
+    "title": "Navidad 2024 en la uap",
+    "date": "2024-12-24",
+    "description": "Jodita de navidad, viene papa noel, se re pone en el audi",
+    "quota": 10,
+    "price": 50
   },
   {
     "id": "2",
-    "title": "Event 2",
-    "date": "2021-02-01",
-    "description": "Description 2",
-    "quota": 2
+    "title": "Año nuevo 2025",
+    "date": "2024-12-31",
+    "description": "Viene messi, estamos viendo si conseguimos al noba y al diego, se re pone",
+    "quota": 2,
+    "price": 75
   }
 ]

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import logo from './media/logo.png'; // Importar la imagen
 
 interface Event {
   id: string;
@@ -7,6 +8,7 @@ interface Event {
   date: string;
   description: string;
   quota: number;
+  price: number; // Añadir el atributo price
 }
 
 const App: React.FC = () => {
@@ -20,18 +22,26 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Event List</h1>
-      <div id="event-list">
-        {events.map(event => (
-          <div key={event.id} className="event bg-white p-4 mb-4 rounded shadow">
-            <h2 className="text-xl font-semibold">{event.title}</h2>
-            <p><strong>Date:</strong> {event.date}</p>
-            <p><strong>Description:</strong> {event.description}</p>
-            <p><strong>Quota:</strong> {event.quota}</p>
-          </div>
-        ))}
-      </div>
+    <div className="dark">
+      <header className="bg-purple-800 p-4" style={{ backgroundColor: '#6E267B' }}>
+        <div className="container mx-auto flex items-center">
+          <img src={logo} alt="Project Logo" className="h-12 mr-4" />
+          <h1 className="text-2xl font-bold text-white">Event List</h1>
+        </div>
+      </header>
+      <main className="container mx-auto p-4">
+        <div id="event-list">
+          {events.map(event => (
+            <div key={event.id} className="event p-4 mb-4 rounded shadow" style={{ backgroundColor: '#6E267B' }}>
+              <h2 className="text-xl font-semibold text-white">{event.title}</h2>
+              <p><strong>Fecha:</strong> {event.date}</p>
+              <p><strong>Info:</strong> {event.description}</p>
+              <p><strong>Cupo:</strong> {event.quota}</p>
+              <p><strong>Tickets desde </strong> ${event.price}</p> {/* Mostrar el precio */}
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
 }

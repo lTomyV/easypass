@@ -10,6 +10,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #4d4d4d;
+}
+
+/* Estilos personalizados para el modo oscuro */
+body.dark {
+  @apply bg-gray-900 text-white;
 }
 
 code {

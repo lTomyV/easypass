@@ -13,18 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // src/infrastructure/input/TicketController.ts
-const express_1 = __importDefault(require("express"));
-const BuyTicket_1 = require("../../core/app/BuyTicket");
-const InMemoryTicketRepository_1 = require("../output/InMemoryTicketRepository");
-const InMemoryEventRepository_1 = require("../output/InMemoryEventRepository");
-const path_1 = __importDefault(require("path"));
-const app = (0, express_1.default)();
-app.use(express_1.default.json());
-const ticketRepo = new InMemoryTicketRepository_1.InMemoryTicketRepository(path_1.default.resolve(__dirname, '../../data/tickets.json'));
-const eventRepo = new InMemoryEventRepository_1.InMemoryEventRepository(path_1.default.resolve(__dirname, '../../data/events.json'));
+const express = __importDefault(require("express"));
+const BuyTicket = require("../../core/app/BuyTicket");
+const InMemoryTicketRepository = require("../output/InMemoryTicketRepository");
+const InMemoryEventRepository = require("../output/InMemoryEventRepository");
+const path = __importDefault(require("path"));
+const app = (0, express.default)();
+app.use(express.default.json());
+const ticketRepo = new InMemoryTicketRepository.InMemoryTicketRepository(path.default.resolve(__dirname, '../../data/tickets.json'));
+const eventRepo = new InMemoryEventRepository.InMemoryEventRepository(path.default.resolve(__dirname, '../../data/events.json'));
 (() => __awaiter(void 0, void 0, void 0, function* () {
     yield eventRepo.loadEvents(); // Cargar eventos desde el archivo JSON
-    const buyTicket = new BuyTicket_1.BuyTicket(ticketRepo, eventRepo);
+    const buyTicket = new BuyTicket.BuyTicket(ticketRepo, eventRepo);
     app.post('/buy-ticket', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { eventId } = req.body;
@@ -50,10 +50,10 @@ const eventRepo = new InMemoryEventRepository_1.InMemoryEventRepository(path_1.d
         }
     }));
     // Servir archivos estáticos del frontend
-    app.use(express_1.default.static(path_1.default.join(__dirname, '../../../frontend/build')));
+    app.use(express.default.static(path.default.join(__dirname, '../../../frontend/build')));
     // Manejar todas las demás rutas con el archivo index.html del frontend
     app.get('*', (req, res) => {
-        res.sendFile(path_1.default.join(__dirname, '../../../frontend/build', 'index.html'));
+        res.sendFile(path.default.join(__dirname, '../../../frontend/build', 'index.html'));
     });
     app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 }))();
