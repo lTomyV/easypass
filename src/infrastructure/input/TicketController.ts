@@ -24,7 +24,7 @@ const reservationTimers: { [ticketId: string]: NodeJS.Timeout } = {};
     try {
       const { eventId } = req.body;
       const ticketId = await buyTicket.execute(eventId);
-      //console.log(`Ticket comprado: ${ticketId} para el evento ${eventId}`);
+      console.log(`Ticket comprado: ${ticketId} para el evento ${eventId}`);
       res.status(200).json({ success: true, ticketId });
     } catch (error) {
       if (error instanceof Error) {
@@ -55,7 +55,7 @@ const reservationTimers: { [ticketId: string]: NodeJS.Timeout } = {};
       const soldTickets = tickets.filter(ticket => ticket.status === 'SOLD').length;
       const reservedCount = reservedTickets[eventId] || 0;
       const availableTickets = event.quota - soldTickets - reservedCount;
-      //console.log(`Disponibilidad para el evento ${eventId}: ${availableTickets} tickets`);
+      console.log(`Disponibilidad para el evento ${eventId}: ${availableTickets} tickets`);
       res.status(200).json({ success: true, availableTickets });
     } catch (error) {
       res.status(500).json({ success: false, message: 'Failed to check availability' });
@@ -79,15 +79,33 @@ const reservationTimers: { [ticketId: string]: NodeJS.Timeout } = {};
       }
       reservedTickets[eventId] = reservedCount + 1;
       const ticketId = uuidv4();
-      //console.log(`Ticket reservado: ${ticketId} para el evento ${eventId}`);
+      console.log(`Ticket reservado: ${ticketId} para el evento ${eventId}`);
       reservationTimers[ticketId] = setTimeout(() => {
         reservedTickets[eventId] = reservedTickets[eventId] - 1;
         delete reservationTimers[ticketId];
-        //console.log(`Reserva expirada: ${ticketId} para el evento ${eventId}`);
+        console.log(`Reserva expirada: ${ticketId} para el evento ${eventId}`);
       }, 10 * 60 * 1000); // 10 minutos
       res.status(200).json({ success: true, ticketId });
     } catch (error) {
       res.status(500).json({ success: false, message: 'Failed to reserve ticket' });
+    }
+  });
+
+  app.post('/api/events/:eventId/cancel-reservation', async (req: any, res: any) => {
+    try {
+      const { eventId } = req.params;
+      const { ticketId } = req.body;
+      if (reservationTimers[ticketId]) {
+        clearTimeout(reservationTimers[ticketId]);
+        delete reservationTimers[ticketId];
+        reservedTickets[eventId] = reservedTickets[eventId] - 1;
+        console.log(`Reserva cancelada: ${ticketId} para el evento ${eventId}`);
+        res.status(200).json({ success: true });
+      } else {
+        res.status(400).json({ success: false, message: 'Reservation not found' });
+      }
+    } catch (error) {
+      res.status(500).json({ success: false, message: 'Failed to cancel reservation' });
     }
   });
 
@@ -102,14 +120,14 @@ const reservationTimers: { [ticketId: string]: NodeJS.Timeout } = {};
       }
       const soldTickets = tickets.filter(ticket => ticket.status === 'SOLD').length;
       const reservedCount = reservedTickets[eventId] || 0;
-      //const availableTickets = event.quota - soldTickets - reservedCount;
-      //if (availableTickets <= 0) {
-      //  return res.status(400).json({ success: false, message: 'No tickets available' });
-      //}
+      const availableTickets = event.quota - soldTickets - reservedCount;
+      if (availableTickets <= 0) {
+        return res.status(400).json({ success: false, message: 'No tickets available' });
+      }
       const ticket = new Ticket(uuidv4(), eventId, 'SOLD');
       await ticketRepo.addTicket(ticket);
       reservedTickets[eventId] = reservedCount > 0 ? reservedCount - 1 : 0;
-      //console.log(`Ticket comprado: ${ticket.id} para el evento ${eventId}`);
+      console.log(`Ticket comprado: ${ticket.id} para el evento ${eventId}`);
       res.status(200).json({ success: true, ticketId: ticket.id });
     } catch (error) {
       res.status(500).json({ success: false, message: 'Failed to buy ticket' });
