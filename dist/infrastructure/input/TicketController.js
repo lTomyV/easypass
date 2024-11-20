@@ -101,6 +101,25 @@ const reservationTimers = {};
             res.status(500).json({ success: false, message: 'Failed to reserve ticket' });
         }
     }));
+    app.post('/api/events/:eventId/cancel-reservation', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { eventId } = req.params;
+            const { ticketId } = req.body;
+            if (reservationTimers[ticketId]) {
+                clearTimeout(reservationTimers[ticketId]);
+                delete reservationTimers[ticketId];
+                reservedTickets[eventId] = reservedTickets[eventId] - 1;
+                console.log(`Reserva cancelada: ${ticketId} para el evento ${eventId}`);
+                res.status(200).json({ success: true });
+            }
+            else {
+                res.status(400).json({ success: false, message: 'Reservation not found' });
+            }
+        }
+        catch (error) {
+            res.status(500).json({ success: false, message: 'Failed to cancel reservation' });
+        }
+    }));
     app.post('/api/events/:eventId/buy', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const { eventId } = req.params;
@@ -110,12 +129,7 @@ const reservationTimers = {};
             if (!event) {
                 return res.status(404).json({ success: false, message: 'Event not found' });
             }
-            const soldTickets = tickets.filter(ticket => ticket.status === 'SOLD').length;
-            const reservedCount = reservedTickets[eventId] || 0;
-            //const availableTickets = event.quota - soldTickets - reservedCount;
-            //if (availableTickets <= 0) {
-            //    return res.status(400).json({ success: false, message: 'No tickets available' });
-            //}
+            // No hay necesidad de verificar la disponibilidad de tickets, ya que si se hace la call a este endpoint es porque ya se reservó un ticket antes
             const ticket = new Ticket_1.Ticket((0, uuid_1.v4)(), eventId, 'SOLD');
             yield ticketRepo.addTicket(ticket);
             reservedTickets[eventId] = reservedCount > 0 ? reservedCount - 1 : 0;
