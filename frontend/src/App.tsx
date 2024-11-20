@@ -69,7 +69,7 @@ const App: React.FC = () => {
       <header className="bg-purple-800 p-4" style={{ backgroundColor: '#6E267B' }}>
         <div className="container mx-auto flex items-center">
           <img src={logo} alt="Project Logo" className="h-12 mr-4" />
-          <h1 className="text-2xl font-bold text-white">Event List</h1>
+          <h1 className="text-2xl font-bold text-white"></h1>
         </div>
       </header>
       <main className="container mx-auto p-4">
