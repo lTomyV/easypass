@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const BuyTicket_1 = require("../../core/app/BuyTicket");
 const InMemoryTicketRepository_1 = require("../output/InMemoryTicketRepository");
 const InMemoryEventRepository_1 = require("../output/InMemoryEventRepository");
 const Ticket_1 = require("../../core/domain/Ticket");
@@ -28,23 +27,6 @@ const reservedTickets = {};
 const reservationTimers = {};
 (() => __awaiter(void 0, void 0, void 0, function* () {
     yield eventRepo.loadEvents(); // Cargar eventos desde el archivo JSON
-    const buyTicket = new BuyTicket_1.BuyTicket(ticketRepo, eventRepo);
-    app.post('/buy-ticket', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const { eventId } = req.body;
-            const ticketId = yield buyTicket.execute(eventId);
-            console.log(`Ticket comprado: ${ticketId} para el evento ${eventId}`);
-            res.status(200).json({ success: true, ticketId });
-        }
-        catch (error) {
-            if (error instanceof Error) {
-                res.status(400).json({ success: false, message: error.message });
-            }
-            else {
-                res.status(400).json({ success: false, message: 'Unknown error occurred' });
-            }
-        }
-    }));
     app.get('/api/events', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const events = yield eventRepo.getEvents();
@@ -129,7 +111,12 @@ const reservationTimers = {};
             if (!event) {
                 return res.status(404).json({ success: false, message: 'Event not found' });
             }
-            // No hay necesidad de verificar la disponibilidad de tickets, ya que si se hace la call a este endpoint es porque ya se reservó un ticket antes
+            const soldTickets = tickets.filter(ticket => ticket.status === 'SOLD').length;
+            const reservedCount = reservedTickets[eventId] || 0;
+            const availableTickets = event.quota - soldTickets - reservedCount;
+            if (availableTickets <= 0) {
+                return res.status(400).json({ success: false, message: 'No tickets available' });
+            }
             const ticket = new Ticket_1.Ticket((0, uuid_1.v4)(), eventId, 'SOLD');
             yield ticketRepo.addTicket(ticket);
             reservedTickets[eventId] = reservedCount > 0 ? reservedCount - 1 : 0;

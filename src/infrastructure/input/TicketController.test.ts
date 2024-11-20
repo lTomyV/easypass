@@ -18,21 +18,6 @@ const reservationTimers: { [ticketId: string]: NodeJS.Timeout } = {};
 
 (async () => {
   await eventRepo.loadEvents(); // Cargar eventos desde el archivo JSON
-  const buyTicket = new BuyTicket(ticketRepo, eventRepo);
-
-  app.post('/buy-ticket', async (req: any, res: any) => {
-    try {
-      const { eventId } = req.body;
-      const ticketId = await buyTicket.execute(eventId);
-      res.status(200).json({ success: true, ticketId });
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(400).json({ success: false, message: error.message });
-      } else {
-        res.status(400).json({ success: false, message: 'Unknown error occurred' });
-      }
-    }
-  });
 
   app.get('/api/events', async (req: any, res: any) => {
     try {

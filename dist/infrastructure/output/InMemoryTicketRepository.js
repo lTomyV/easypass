@@ -34,11 +34,6 @@ class InMemoryTicketRepository {
             yield fs_1.promises.writeFile(this.filePath, data, 'utf-8');
         });
     }
-    getAvailableTickets(eventId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.tickets.filter(ticket => ticket.eventId === eventId && ticket.status === 'AVAILABLE');
-        });
-    }
     getTicketsByEventId(eventId) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.tickets.filter(ticket => ticket.eventId === eventId);

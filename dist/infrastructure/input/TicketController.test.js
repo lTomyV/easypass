@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const BuyTicket_1 = require("../../core/app/BuyTicket");
 const InMemoryTicketRepository_1 = require("../output/InMemoryTicketRepository");
 const InMemoryEventRepository_1 = require("../output/InMemoryEventRepository");
 const Ticket_1 = require("../../core/domain/Ticket");
@@ -28,22 +27,6 @@ const reservedTickets = {};
 const reservationTimers = {};
 (() => __awaiter(void 0, void 0, void 0, function* () {
     yield eventRepo.loadEvents(); // Cargar eventos desde el archivo JSON
-    const buyTicket = new BuyTicket_1.BuyTicket(ticketRepo, eventRepo);
-    app.post('/buy-ticket', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const { eventId } = req.body;
-            const ticketId = yield buyTicket.execute(eventId);
-            res.status(200).json({ success: true, ticketId });
-        }
-        catch (error) {
-            if (error instanceof Error) {
-                res.status(400).json({ success: false, message: error.message });
-            }
-            else {
-                res.status(400).json({ success: false, message: 'Unknown error occurred' });
-            }
-        }
-    }));
     app.get('/api/events', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const events = yield eventRepo.getEvents();

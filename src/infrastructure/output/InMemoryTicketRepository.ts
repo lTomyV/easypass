@@ -27,10 +27,6 @@ export class InMemoryTicketRepository implements ITicketRepository {
     await fs.writeFile(this.filePath, data, 'utf-8');
   }
 
-  async getAvailableTickets(eventId: string): Promise<Ticket[]> {
-    return this.tickets.filter(ticket => ticket.eventId === eventId && ticket.status === 'AVAILABLE');
-  }
-
   async getTicketsByEventId(eventId: string): Promise<Ticket[]> {
     return this.tickets.filter(ticket => ticket.eventId === eventId);
   }
