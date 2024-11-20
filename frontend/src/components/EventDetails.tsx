@@ -167,6 +167,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event, availableTickets, on
                 <button
                   type="button"
                   className="bg-gray-500 text-white px-4 py-2 rounded mr-2"
+                  onClick={handleCancel}
                 >
                   Cancelar
                 </button>
